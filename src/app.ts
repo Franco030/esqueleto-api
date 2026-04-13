@@ -1,20 +1,13 @@
-import express from 'express'
-import type { Request, Response } from 'express';
-import cors from 'cors'
-import dotenv from 'dotenv'
-
-dotenv.config();
+import express from 'express';
+import { config } from './config/envs.js';
+import issueRoutes from './routes/issue.routes.js'
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
-app.get('/api/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'OK', message: 'Servidor Typescript funcionando' });
-});
+app.use(`${config.apiPrefix}`, issueRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(config.port, () => {
+  console.log('Servidor typescript corriendo');
 });
